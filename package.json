@@ -1,0 +1,29 @@
+{
+  "name": "lingering",
+  "version": "0.0.5",
+  "description": "When you want to finish what you've started.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/risseraka/lingering.git"
+  },
+  "keywords": [
+    "shutdown",
+    "cleaner"
+  ],
+  "author": {
+    "name": "Adrien Risser",
+    "email": "risseraka@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/risseraka/lingering/issues"
+  },
+  "homepage": "https://github.com/risseraka/lingering#readme"
+}
