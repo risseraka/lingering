@@ -2,6 +2,8 @@
 
 function asyncify(func) {
   return function (done) {
+    // check function arity,
+    // if it doesn't take parameters, consider it as synchronous
     if (func.length === 0) {
       try {
         return done(null, func());
@@ -63,6 +65,7 @@ function processHandlers() {
   });
 }
 
+var master = true;
 var ending = false;
 
 function onSignal(signal, e) {
@@ -86,22 +89,76 @@ function onSignal(signal, e) {
   processHandlers();
 }
 
+function saveHandler(handler) {
+  exitHandlers.push(handler);
+}
+
 function addHandler(name, func) {
   if (!func) {
     func = name;
     name = func.name || 'unnamed';
   }
 
-  exitHandlers.push({
+  var handler = {
     name: '[' + name + ']',
     func: asyncify(func),
     done: false,
     error: null
-  });
+  };
+
+  if (!master) {
+    // pass handler to master instance
+    process.emit('lingering_handler', handler);
+  } else {
+    saveHandler(handler);
+  }
 }
 
 module.exports = addHandler;
 
-['SIGINT', 'SIGQUIT', 'SIGTERM'].forEach(function (signal) {
-  process.on(signal, onSignal.bind(null, signal));
+var signalsHandlers = ['SIGINT', 'SIGQUIT', 'SIGTERM'].map(function (signal) {
+  return {
+    signal: signal,
+    listener: onSignal.bind(null, signal)
+  };
 });
+
+signalsHandlers.forEach(function (signalHandler) {
+  process.on(signalHandler.signal, signalHandler.listener);
+});
+
+var pinged = false;
+var listening = false;
+
+function onPing() {
+  pinged = true;
+
+  process.emit('lingering_pong');
+}
+
+function onPong() {
+  if (!pinged) {
+    master = false;
+    // remove event listeners, master handle it
+    process.removeListener('lingering_pong', onPong);
+    process.removeListener('lingering_ping', onPing);
+    signalsHandlers.forEach(function (signalHandler) {
+      process.removeListener(signalHandler.signal, signalHandler.listener);
+    });
+  } else if (!listening) {
+    // master only needs to listen to new handlers once
+    listening = true;
+
+    // master must listen to new handlers coming from slaves
+    process.on('lingering_handler', saveHandler);
+  }
+}
+
+// as emitting is synchronous, first listen to pong
+process.on('lingering_pong', onPong);
+
+// try to ping already listening instances
+process.emit('lingering_ping');
+
+// listening after emitting avoids pinging oneself
+process.on('lingering_ping', onPing);

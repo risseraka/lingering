@@ -1,7 +1,7 @@
 {
   "name": "lingering",
-  "version": "0.0.5",
-  "description": "When you want to finish what you've started.",
+  "version": "0.0.6",
+  "description": "Shutdown cleaner",
   "main": "index.js",
   "directories": {
     "example": "examples"

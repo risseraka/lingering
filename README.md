@@ -1,6 +1,6 @@
 # lingering
 
-When you want to finish what you've started.
+Shutdown cleaner
 
 # install
 
