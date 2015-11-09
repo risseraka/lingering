@@ -74,17 +74,17 @@ Will everything be alright?
 I'll try my best finishing this up.
 Terminating due to SIGTERM signal, calling all handlers...
 [synchronousError] terminated with error: Error: It won't go as planned
-    at synchronousError (/home/adrien/pleasure/bemyapp/lingering/errors.js:4:9)
-    at Object.func (/home/adrien/pleasure/bemyapp/node_modules/lingering/index.js:7:27)
-    at /home/adrien/pleasure/bemyapp/node_modules/lingering/index.js:53:13
+    at synchronousError (.../lingering/examples/errors.js:4:9)
+    at Object.func (.../lingering/index.js:7:27)
+    at .../lingering/index.js:53:13
     at Array.forEach (native)
-    at processHandlers (/home/adrien/pleasure/bemyapp/node_modules/lingering/index.js:52:16)
-    at onSignal (/home/adrien/pleasure/bemyapp/node_modules/lingering/index.js:86:3)
+    at processHandlers (.../lingering/index.js:52:16)
+    at onSignal (.../lingering/index.js:86:3)
     at emitNone (events.js:67:13)
     at process.emit (events.js:166:7)
     at Signal.wrap.onsignal (node.js:790:46)
 [asynchronousError] terminated with error: Error: I feel a bit mischievous
-    at null._onTimeout (/home/adrien/pleasure/bemyapp/lingering/errors.js:9:10)
+    at null._onTimeout (.../lingering/examples/errors.js:9:10)
     at Timer.listOnTimeout (timers.js:89:15)
 */
 
